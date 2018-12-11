@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>Analytics Implementation Guide</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -222,27 +222,78 @@
         <ul class="search-results"></ul>
       <ul id="toc" class="toc-list-h1">
           <li>
-            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+            <a href="#prerequisites" class="toc-h1 toc-link" data-title="Prerequisites">Prerequisites</a>
           </li>
           <li>
-            <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
+            <a href="#ensighten-documentation" class="toc-h1 toc-link" data-title="Ensighten Documentation">Ensighten Documentation</a>
           </li>
           <li>
-            <a href="#kittens" class="toc-h1 toc-link" data-title="Kittens">Kittens</a>
+            <a href="#helpful-contacts" class="toc-h1 toc-link" data-title="Helpful Contacts">Helpful Contacts</a>
+          </li>
+          <li>
+            <a href="#ensighten-implementation" class="toc-h1 toc-link" data-title="Ensighten Implementation">Ensighten Implementation</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-kittens" class="toc-h2 toc-link" data-title="Get All Kittens">Get All Kittens</a>
+                    <a href="#best-practices" class="toc-h2 toc-link" data-title="Best Practices">Best Practices</a>
                   </li>
                   <li>
-                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="Get a Specific Kitten">Get a Specific Kitten</a>
-                  </li>
-                  <li>
-                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Delete a Specific Kitten">Delete a Specific Kitten</a>
+                    <a href="#commit-vs-publish" class="toc-h2 toc-link" data-title="Commit vs Publish">Commit vs Publish</a>
                   </li>
               </ul>
           </li>
           <li>
-            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
+            <a href="#site-implementation-global-standard" class="toc-h1 toc-link" data-title="Site Implementation (Global Standard)">Site Implementation (Global Standard)</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#turner-metadata-object" class="toc-h2 toc-link" data-title="Turner Metadata Object">Turner Metadata Object</a>
+                  </li>
+                  <li>
+                    <a href="#track-action-array" class="toc-h2 toc-link" data-title="Track Action Array">Track Action Array</a>
+                  </li>
+                  <li>
+                    <a href="#single-page-applications" class="toc-h2 toc-link" data-title="Single-Page Applications">Single-Page Applications</a>
+                  </li>
+                  <li>
+                    <a href="#interaction-tracking" class="toc-h2 toc-link" data-title="Interaction Tracking">Interaction Tracking</a>
+                  </li>
+                  <li>
+                    <a href="#interaction-tracking-2" class="toc-h2 toc-link" data-title="Interaction Tracking">Interaction Tracking</a>
+                  </li>
+                  <li>
+                    <a href="#video-tracking" class="toc-h2 toc-link" data-title="Video Tracking">Video Tracking</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#extending-adobe-analytics-tracking" class="toc-h1 toc-link" data-title="Extending Adobe Analytics Tracking">Extending Adobe Analytics Tracking</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#adding-a-standard-page-view-variable" class="toc-h2 toc-link" data-title="Adding a Standard Page View Variable">Adding a Standard Page View Variable</a>
+                  </li>
+                  <li>
+                    <a href="#adding-a-page-view-variable-for-single-page-applications" class="toc-h2 toc-link" data-title="Adding a Page View Variable for Single Page Applications">Adding a Page View Variable for Single Page Applications</a>
+                  </li>
+                  <li>
+                    <a href="#adding-a-new-variable-amp-event-to-interaction-tracking" class="toc-h2 toc-link" data-title="Adding a New Variable &amp; Event to Interaction Tracking">Adding a New Variable &amp; Event to Interaction Tracking</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#testing-analytics-calls" class="toc-h1 toc-link" data-title="Testing Analytics Calls">Testing Analytics Calls</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#page-view-call" class="toc-h2 toc-link" data-title="Page View Call">Page View Call</a>
+                  </li>
+                  <li>
+                    <a href="#interaction-call" class="toc-h2 toc-link" data-title="Interaction Call">Interaction Call</a>
+                  </li>
+                  <li>
+                    <a href="#video-start-or-ad-start-call" class="toc-h2 toc-link" data-title="Video Start or Ad Start Call">Video Start or Ad Start Call</a>
+                  </li>
+                  <li>
+                    <a href="#video-heartbeat-call" class="toc-h2 toc-link" data-title="Video Heartbeat Call">Video Heartbeat Call</a>
+                  </li>
+              </ul>
           </li>
       </ul>
         <ul class="toc-footer">
@@ -253,243 +304,1033 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+        <h1 id='prerequisites'>Prerequisites</h1>
+<ul>
+<li>Analytics SDR </li>
+<li>Access to Ensighten </li>
+<li>Adobe configuration values :
 
-<p>We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<ul>
+<li>Report Suite ID (rsid)</li>
+<li>Adobe Login Company – select from below table</li>
+<li>Secure Tracking Server – select from below table</li>
+<li>Non-Secure Tracking Server – select from below table</li>
+<li>Namespace – select from below table</li>
+</ul></li>
+</ul>
 
-<p>This example API documentation page was created with <a href="https://github.com/lord/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&#39;s documentation.</p>
-<h1 id='authentication'>Authentication</h1>
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
-</blockquote>
-
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
-
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code>Authorization: meowmeowmeow</code></p>
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://example.com/api/kittens</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
+<th>Adobe Login Company</th>
+<th>Secure and Non-Secure Tracking Server</th>
+<th>Namespace</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>Cartoon Network New Media</td>
+<td>cartoonnetworknewmedia.d2.sc.omtrdc.net</td>
+<td>cartoonnetworknewmedia</td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>TBS Latin America</td>
+<td>tbslatinamerica.207.net</td>
+<td>tbslatinamerica</td>
+</tr>
+<tr>
+<td>Turner APAC</td>
+<td>turnerapac.sc.omtrdc.net</td>
+<td>turnerapac</td>
+</tr>
+<tr>
+<td>Turner UK</td>
+<td>turneruk.2o7.net</td>
+<td>turneruk</td>
+</tr>
+<tr>
+<td>Turner International</td>
+<td>turnerinternational.sc.omtrdc.net</td>
+<td>turnerinternational</td>
 </tr>
 </tbody></table>
+<h1 id='ensighten-documentation'>Ensighten Documentation</h1>
+<p>It is recommended to go through training videos before using Ensighten.</p>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<ul>
+<li>Training Videos: <a href='https://www.ensighten.com/training/manage-technical/'>https://www.ensighten.com/training/manage-technical/</a></li></li>
+<li>Adobe Training Videos: <a href='https://www.ensighten.com/training/sitecatalyst-implementation-via-manage/'>https://www.ensighten.com/training/sitecatalyst-implementation-via-manage/</a></li></li>
+<li>Recommended Tools: <a href='https://www.ensighten.com/training/tools/'> https://www.ensighten.com/training/tools/</a></li></li>
+</ul>
+<h1 id='helpful-contacts'>Helpful Contacts</h1>
+<ul>
+<li>Any questions – contact <a href='#'> adaqdev@turner.com</a></li> </li>
+</ul>
+<h1 id='ensighten-implementation'>Ensighten Implementation</h1>
+<p>1). Create a new space in Ensighten Manage and make a note of the Bootstrap include script.</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<p>Example:</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+<p><code>&lt;script type=&quot;text/javascript&quot; src=&quot;//nexus.ensighten.com/turnerintl/example-space/Bootstrap.js&quot;&gt;&lt;/script&gt;</code></p>
+<h2 id='best-practices'>Best Practices</h2>
+<ul>
+<li>Create a space per environment: <strong>production</strong> and <strong>non-production</strong> environments.</li>
+<li>Add a server side <strong>kill switch</strong> for the Bootstrap.  In case of the Ensighten causing any issues on the site, you can easily take it out.</li>
+<li>Add an <strong>environment logic</strong> to automatically load production vs non-production Bootstrap.</li>
+<li>Enable <strong>Tag Alerts</strong> and <strong>Publish Alerts</strong> (Click <strong>turnerintl</strong> in the top right and select <strong>settings</strong>), so you get a notification email when someone publishes in your space.</li>
+</ul>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
+<p>2). Add newly recreated space(s) to the <strong>ExecuteActionTracker</strong> Data Definition within Ensighten.</p>
+
+<p><img src="images/create_space.png" alt="alt text" /></p>
+
+<p>3). Merge all tags from <strong>ADBP Template</strong> space to your new space.  <u>Make sure to merge all tags together</u>.</p>
+
+<p>Here are descriptions for each tag in <strong>ADBP Template</strong> space:</p>
+
+<ul>
+<li><strong>Adobe Analytics – All Page View</strong> – handles every page view on the site</li>
+<li><strong>Adobe Analytics – Base Code</strong> – holds the Adobe AppMeasurement Library</li>
+<li><strong>Adobe Analytics – Marketing Cloud Visitor ID</strong> – holds the Adobe Visitor Library</li>
+<li><strong>Adobe Analytics – Page Events</strong> – handles interaction events and post page load events</li>
+<li><strong>Adobe Analytics – Video Heartbeat Library</strong> – handles Adobe video tracking</li>
+<li><strong>ServerComponent Override</strong> – allows debugging from any protocols (e.g. file://)</li>
+<li><strong>trackMetrics PubSub Publisher</strong> – handles video and interaction events with PubSub library</li>
+<li><strong>ActionTracker</strong> – provides methods for post page load tracking (discussed under Track Action Array)</li>
+</ul>
+
+<p>4). Update <strong>rsid</strong>, <strong>trackingServer</strong>, <strong>trackingServerSecure</strong>, <strong>visitorNamespace</strong> and <strong>linkInternalFilters</strong> values in <strong>Adobe Analytics – Base Code</strong> tag.</p>
+
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>Example:</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="k">if</span> <span class="p">(</span><span class="nx">Bootstrapper</span><span class="p">.</span><span class="nx">ensightenOptions</span><span class="p">.</span><span class="nx">publishPath</span> <span class="o">==</span> <span class="s2">"adbp-prod"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">rsid</span> <span class="o">=</span> <span class="s2">"turnerintcartoon"</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">rsid</span> <span class="o">=</span> <span class="s2">"turnerintcartoondev"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">s</span><span class="p">.</span><span class="nx">trackingServer</span> <span class="o">=</span> <span class="s2">"turnerinternational.sc.omtrdc.net"</span><span class="p">;</span>
+<span class="nx">s</span><span class="p">.</span><span class="nx">trackingServerSecure</span> <span class="o">=</span> <span class="s2">"turnerinternational.sc.omtrdc.net"</span><span class="p">;</span>
+<span class="nx">s</span><span class="p">.</span><span class="nx">visitorNamespace</span> <span class="o">=</span> <span class="s2">"turnerinternational"</span><span class="p">;</span>
+<span class="nx">s</span><span class="p">.</span><span class="nx">linkInternalFilters</span> <span class="o">=</span> <span class="s2">"javascript:,example.com,example.net"</span><span class="p">;</span>  <span class="c1">//include all your domains</span>
+</code></pre>
+<p>5). Update the following Adobe VHL (Video Heartbeat Library) configuration in <strong>Adobe Analytics - Video Heartbeat Library</strong> tag.</p>
+
+<ul>
+<li><strong>mediaConfig.trackingServer</strong> – <namespace>.hb.omtrdc.net</li>
+<li><strong>mediaConfig.playerName</strong> – name of your video player (e.g. AVPlayer, HTML5 Player)</li>
+<li><strong>mediaConfig.channel</strong> – name of your channel</li>
+<li><strong>mediaConfig.appVersion</strong> – version of your video player</li>
+<li><strong>mediaConfig.ovp</strong> – name of online video platform through which content gets distributed</li>
+</ul>
+
+<blockquote>
+<p>Example:</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">mediaConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MediaHeartbeatConfig</span><span class="p">();</span>
+<span class="nx">mediaConfig</span><span class="p">.</span><span class="nx">trackingServer</span> <span class="o">=</span> <span class="s2">"turnerinternational.hb.omtrdc.net"</span><span class="p">;</span>
+<span class="nx">mediaConfig</span><span class="p">.</span><span class="nx">playerName</span> <span class="o">=</span> <span class="s2">"example player"</span><span class="p">;</span>
+<span class="nx">mediaConfig</span><span class="p">.</span><span class="nx">channel</span> <span class="o">=</span> <span class="s2">"example channel"</span><span class="p">;</span>
+<span class="nx">mediaConfig</span><span class="p">.</span><span class="nx">debugLogging</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="nx">mediaConfig</span><span class="p">.</span><span class="nx">appVersion</span> <span class="o">=</span> <span class="s2">"example 1.2.3"</span><span class="p">;</span>
+<span class="nx">mediaConfig</span><span class="p">.</span><span class="nx">ssl</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="nx">mediaConfig</span><span class="p">.</span><span class="nx">ovp</span> <span class="o">=</span> <span class="s2">"example ovp"</span><span class="p">;</span>
+</code></pre><h2 id='commit-vs-publish'>Commit vs Publish</h2>
+<p>Ensighten offers two different Bootstrap.js domains depending on the status of your tag.</p>
+
+<ul>
+<li>When a tag is <strong>committed</strong>, it is moved to <strong>nexus-test.ensighten.com</strong> domain.</li>
+<li>When a tag is <strong>published</strong>, it is moved to <strong>nexus.ensighten.com</strong> domain.</li>
+</ul>
+
+<p>This is often helpful moving changes to a production environment.  After merging all changes to the production space within Ensighten; commit the tags and use the nexus-test.ensighten.com domain to verify the changes before publishing. Typically, this is done via a local proxy, such as Charles Proxy or using the Ensighten Browser Extension. </p>
+
+<p>Example:</p>
+
+<p><code>//nexus-test.ensighten.com/turnerintl/example-space/Bootstrap.js</code></p>
+<h1 id='site-implementation-global-standard'>Site Implementation (Global Standard)</h1>
+<blockquote>
+<p>Example:</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+                <span class="kd">var</span> <span class="nx">turner_metadata</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">"products"</span><span class="p">:</span> <span class="s2">"category;product;quantity;price"</span><span class="p">,</span>
+                    <span class="s2">"productsevent"</span><span class="p">:</span> <span class="s2">"prodView or purchase"</span><span class="p">,</span>
+                    <span class="s2">"section"</span><span class="p">:</span> <span class="s2">"site section"</span><span class="p">,</span>
+                    <span class="s2">"searchterm"</span><span class="p">:</span> <span class="s2">"search term"</span><span class="p">,</span>
+                    <span class="s2">"region"</span><span class="p">:</span> <span class="s2">"region"</span><span class="p">,</span>
+                    <span class="s2">"subregion"</span><span class="p">:</span> <span class="s2">"subregion"</span><span class="p">,</span>
+                    <span class="s2">"country"</span><span class="p">:</span> <span class="s2">"country"</span><span class="p">,</span>
+                    <span class="s2">"brand"</span><span class="p">:</span> <span class="s2">"brand of the site"</span><span class="p">,</span>
+                    <span class="s2">"franchise"</span><span class="p">:</span> <span class="s2">"franchise of content"</span><span class="p">,</span>
+                    <span class="s2">"subsection"</span><span class="p">:</span> <span class="s2">"site section level 2"</span><span class="p">,</span>
+                    <span class="s2">"contenttype"</span><span class="p">:</span> <span class="s2">"content type"</span><span class="p">,</span>
+                    <span class="s2">"contenttitle"</span><span class="p">:</span> <span class="s2">"content title"</span><span class="p">,</span>
+                    <span class="s2">"contentID"</span><span class="p">:</span> <span class="s2">"content ID"</span><span class="p">,</span>
+                    <span class="s2">"adobehashid"</span><span class="p">:</span> <span class="s2">"adobe hash ID"</span><span class="p">,</span>
+                    <span class="s2">"authorizedvhl"</span><span class="p">:</span> <span class="s2">"authorized"</span><span class="p">,</span>
+                    <span class="s2">"presentationtemplate"</span><span class="p">:</span> <span class="s2">"presentation template"</span><span class="p">,</span>
+                    <span class="s2">"featuredcontent"</span><span class="p">:</span> <span class="s2">"featured content"</span><span class="p">,</span>
+                    <span class="s2">"registration"</span><span class="p">:</span> <span class="s2">"description of registration"</span><span class="p">,</span>
+                    <span class="s2">"logintype"</span><span class="p">:</span> <span class="s2">"login type"</span><span class="p">,</span>
+                    <span class="s2">"authstate"</span><span class="p">:</span> <span class="s2">"authentication state of user"</span><span class="p">,</span>
+                    <span class="s2">"englishname"</span><span class="p">:</span> <span class="s2">"english name"</span><span class="p">,</span>
+                    <span class="s2">"gametitle"</span><span class="p">:</span> <span class="s2">"game title"</span><span class="p">,</span>
+                    <span class="s2">"gamelevel"</span><span class="p">:</span> <span class="s2">"game level reached"</span><span class="p">,</span>
+                    <span class="s2">"gamemilstone"</span><span class="p">:</span> <span class="s2">"game milestone"</span><span class="p">,</span>
+                    <span class="s2">"micrositename"</span><span class="p">:</span> <span class="s2">"microsite name"</span><span class="p">,</span>
+                    <span class="s2">"micrositeadv"</span><span class="p">:</span> <span class="s2">"microsite advertiser"</span><span class="p">,</span>
+                    <span class="s2">"trackAction"</span> <span class="p">:</span> <span class="p">[]</span>
+                <span class="p">};</span>
+            <span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">"//nexus.ensighten.com/turnerintl/example-space/Bootstrap.js"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/head</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/html</span><span class="err">&gt;
+</span>
+</code></pre>
+<p>A global standards implementation starts with two steps. In the <head> of every page:
+<ol type="1" class="steps_1">
+<li>Add a JavaScript Object named turner_metadata</li>
+<li>Add a call to an external JavaScript file; the Ensighten Bootstrap.js</li>
+</ol></p>
+<h2 id='turner-metadata-object'>Turner Metadata Object</h2>
+<p>In the context of HTML based content (e.g., web sites), the turner_metadata object is:
+<ul class="bullets_2">
+<li>A window-scoped variable</li>
+<li>Defined as turner_metadata</li>
+<li>Follows JSON Syntax </li>
+</ul></p>
+<h3 id='basic-properties'>Basic Properties</h3>
+<ul class="outer-nav">
+<li>Object Keys
+<ul class="mid-list">
+<li>ISO Basic Latin Alphabet (See following ISO Basic Latin Alphabet table)</li>
+<li>Wrapped in quotes (Unicode U+0022)</li>
+</ul>
+
+<p></li>
+<li>Object Values
+<ul class="mid-list">
+<li>Preferred Characters:
+<ul class="inner-list">
+<li>&quot;ISO Basic Latin Alphabet&quot; (See following ISO Basic Latin Alphabet table)</li>
+<li>Integers 0-9 (Unicode U+0030 through U+0039)</li>
+<li>White Space (Unicode U+0020)</li>
+<li>Delimiter &quot;|&quot; (Unicode U+007C)</li>
+</ul>
+</li>
+<li>Wrapped in quotes (Unicode U+0022) </li>
+<li>Exceptions for object values:
+<ul class="inner-list">
+<li>Quotes are omitted from integer values</li>
+<li>LATAM Additional Characters:
+<ul class="inner-most-list">
+<li>ES Language Sites (See following LATAM-Only Spanish Characters table)</li>
+<li>PT Language Sites (See following LATAM-Only Portuguese Characters table)</li>
+</ul></li>
+<li>An array is added to turner_metadata object under the object key trackAction. As discussed later in the documentation this array is used for post page load tracking.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li> General Notes 
+<ul class="mid-list">
+<li>Avoid Reserved &amp; Unreserved Characters where possible per RFC 
+3986 <a href="https://tools.ietf.org/html/rfc3986#section-2.2">https://tools.ietf.org/html/rfc3986#section-2.2</a>
+</li>
+</ul></li>
+</ul></p>
+
+<p>ISO Basic Latin Alphabet
+   <table>
+      <thead>
+         <tr>
+            <th>Character</th>
+            <th>Unicode Value</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr>
+            <td>a</td>
+            <td>U+0061</td>
+         </tr>
+         <tr>
+            <td>b</td>
+            <td>U+0062</td>
+         </tr>
+         <tr>
+            <td>c</td>
+            <td>U+0063</td>
+         </tr>
+         <tr>
+            <td>d</td>
+            <td>U+0064</td>
+         </tr>
+         <tr>
+            <td>e</td>
+            <td>U+0065</td>
+         </tr>
+         <tr>
+            <td>f</td>
+            <td>U+0066</td>
+         </tr>
+         <tr>
+            <td>g</td>
+            <td>
+               U+0067
+            </td>
+         </tr>
+         <tr>
+            <td>h</td>
+            <td>
+               U+0068
+            </td>
+         </tr>
+         <tr>
+            <td>i</td>
+            <td>
+               U+0069
+            </td>
+         </tr>
+         <tr>
+            <td>j</td>
+            <td>
+               U+006A
+            </td>
+         </tr>
+         <tr>
+            <td>k</td>
+            <td>
+               U+006B
+            </td>
+         </tr>
+         <tr>
+            <td>l</td>
+            <td>
+               U+006C
+            </td>
+         </tr>
+         <tr>
+            <td>m</td>
+            <td>
+               U+006D
+            </td>
+         </tr>
+         <tr>
+            <td>n</td>
+            <td>
+               U+006E
+            </td>
+         </tr>
+         <tr>
+            <td>o</td>
+            <td>
+               U+006F
+            </td>
+         </tr>
+         <tr>
+            <td>p</td>
+            <td>
+               U+0070
+            </td>
+         </tr>
+         <tr>
+            <td>q</td>
+            <td>
+               U+0071
+            </td>
+         </tr>
+         <tr>
+            <td>r</td>
+            <td>
+               U+0072
+            </td>
+         </tr>
+         <tr>
+            <td>s</td>
+            <td>
+               U+0073
+            </td>
+         </tr>
+         <tr>
+            <td>t</td>
+            <td>
+               U+0074
+            </td>
+         </tr>
+         <tr>
+            <td>u</td>
+            <td>
+               U+0075
+            </td>
+         </tr>
+         <tr>
+            <td>v</td>
+            <td>
+               U+0076
+            </td>
+         </tr>
+         <tr>
+            <td>w</td>
+            <td>
+               U+0077
+            </td>
+         </tr>
+         <tr>
+            <td>x</td>
+            <td>
+               U+0078
+            </td>
+         </tr>
+         <tr>
+            <td>y</td>
+            <td>U+0079</td>
+         </tr>
+         <tr>
+            <td>z</td>
+            <td>U+007A</td>
+         </tr>
+      </tbody>
+   </table></p>
+
+<p>LATAM-Only Portuguese Characters
+   <table>
+   <thead>
+      <tr>
+         <th>Character</th>
+         <th>Unicode Value</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td>&#224;</td>
+         <td>U+00E0</td>
+      </tr>
+      <tr>
+         <td>&#225;</td>
+         <td>U+00E1</td>
+      </tr>
+      <tr>
+         <td>&#226;</td>
+         <td>U+00E2</td>
+      </tr>
+      <tr>
+         <td>&#227;</td>
+         <td>U+00E3</td>
+      </tr>
+      <tr>
+         <td>&#231;</td>
+         <td>U+00E7</td>
+      </tr>
+      <tr>
+         <td>&#233;</td>
+         <td>U+00E9</td>
+      </tr>
+      <tr>
+         <td>&#234;</td>
+         <td>U+00EA         </td>
+      </tr>
+      <tr>
+         <td>&#237;</td>
+         <td>
+            U+00ED
+         </td>
+      </tr>
+      <tr>
+         <td>&#243;</td>
+         <td>
+           U+00F3
+         </td>
+      </tr>
+      <tr>
+         <td>&#244;</td>
+         <td>
+           U+00F4
+         </td>
+      </tr>
+      <tr>
+         <td>&#245;</td>
+         <td>
+            U+00F5
+         </td>
+      </tr>
+      <tr>
+         <td>&#250;</td>
+         <td>
+            U+00FA
+         </td>
+      </tr>
+      <tr>
+      <td>&#252;</td>
+      <td>U+00FC</td>
+      </tr>
+      </tbody>
+      </table></p>
+
+<p>LATAM-Only Spanish Characters
+   <table>
+   <thead>
+      <tr>
+         <th>Character</th>
+         <th>Unicode Value</th>
+      </tr>
+   </thead>
+   <tbody></p>
+
+<p><tr>
+         <td>&#225;</td>
+         <td>U+00E1</td>
+      </tr></p>
+
+<p><tr>
+         <td>&#233;</td>
+         <td>U+00E9</td>
+      </tr>
+      <tr>
+         <td>&#234;</td>
+         <td>U+00EA         </td>
+      </tr>
+      <tr>
+         <td>&#237;</td>
+         <td>
+            U+00ED
+         </td>
+      </tr>
+      <tr>
+         <td>&#243;</td>
+         <td>
+           U+00F3
+         </td>
+      </tr></p>
+
+<p><tr>
+         <td>&#250;</td>
+         <td>
+            U+00FA
+         </td>
+      </tr>
+      <tr>
+      <td>&#241;;</td>
+      <td>U+00F1</td>
+      </tr>
+      <tr>
+      <td>&#252;</td>
+      <td>U+00FC</td>
+      </tr>
+      </tbody>
+      </table></p>
 
 <aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
-</tr>
-</tbody></table>
-<h2 id='delete-a-specific-kitten'>Delete a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h2 id='track-action-array'>Track Action Array</h2>
+<p>The trackAction array, as outlined by the Turner Metadata Object specification, is utilized in post page load tracking.  Tracked activities may be pushed into the trackAction array before analytics tools have finished loading. </p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<p>This method of post page load tracking utilizes two custom functions:
+<ul class="outer-list"><li>actionTracker – A custom JavaScript library which:
+<ul class="mid-list">
+<li>Reads and tracks &quot;stored&quot; values in the array </li>
+<li>Once complete, overwrites the push method only on the trackAction array</li>
+</ul></li>
+<li>trackData – An intermediate function which routes calls to the appropriate tracking function</li></ul></p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -X DELETE
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+<p>In a standard implementation the actionTracker library is initialized within Ensighten using the following. <br></p>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<p><code>Bootstrapper.actionTracker.add(&quot;turner_metadata&quot;, &quot;trackAction&quot;, Bootstrapper.trackData);</code></br></p>
+
+<p>Where:
+<ul class="outer-list">
+<li>&quot;turner_metadata&quot; is the metadata object containing the target array</li>
+<li>&quot;trackAction&quot; is the target array</li>
+<li>&quot;Bootstrapper.trackData&quot; is the function called to handle tracking</li>
+</ul></p>
+<h2 id='single-page-applications'>Single-Page Applications</h2>
+<p>The Bootstrap.js include will send a page view for initial page load only.  To manually send page views, use the following snippet.  If the automatic initial page load call is not desired, disable the <strong>Adobe Analytics – All Page View</strong> tag and use the following snippet to trigger a page view manually.</p>
+
+<blockquote>
+<p>Example</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+        <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"pageview"</span><span class="p">,</span>
+        <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"products"</span><span class="p">:</span> <span class="s2">"category;product;quantity;price"</span><span class="p">,</span>
+        <span class="s2">"productsevent"</span><span class="p">:</span> <span class="s2">"prodView or purchase"</span><span class="p">,</span>
+        <span class="s2">"section"</span><span class="p">:</span> <span class="s2">"site section"</span><span class="p">,</span>
+        <span class="s2">"searchterm"</span><span class="p">:</span> <span class="s2">"search term"</span><span class="p">,</span>
+        <span class="s2">"region"</span><span class="p">:</span> <span class="s2">"region"</span><span class="p">,</span>
+        <span class="s2">"subregion"</span><span class="p">:</span> <span class="s2">"subregion"</span><span class="p">,</span>
+        <span class="s2">"country"</span><span class="p">:</span> <span class="s2">"country"</span><span class="p">,</span>
+        <span class="s2">"brand"</span><span class="p">:</span> <span class="s2">"brand of the site"</span><span class="p">,</span>
+        <span class="s2">"franchise"</span><span class="p">:</span> <span class="s2">"franchise of content"</span><span class="p">,</span>
+        <span class="s2">"subsection"</span><span class="p">:</span> <span class="s2">"site section level 2"</span><span class="p">,</span>
+        <span class="s2">"contenttype"</span><span class="p">:</span> <span class="s2">"content type"</span><span class="p">,</span>
+        <span class="s2">"contenttitle"</span><span class="p">:</span> <span class="s2">"content title"</span><span class="p">,</span>
+        <span class="s2">"contentID"</span><span class="p">:</span> <span class="s2">"content ID"</span><span class="p">,</span>
+        <span class="s2">"adobehashid"</span><span class="p">:</span> <span class="s2">"adobe hash ID"</span><span class="p">,</span>
+        <span class="s2">"authorizedvhl"</span><span class="p">:</span> <span class="s2">"authorized"</span><span class="p">,</span>
+        <span class="s2">"presentationtemplate"</span><span class="p">:</span> <span class="s2">"presentation template"</span><span class="p">,</span>
+        <span class="s2">"featuredcontent"</span><span class="p">:</span> <span class="s2">"featured content"</span><span class="p">,</span>
+        <span class="s2">"registration"</span><span class="p">:</span> <span class="s2">"description of registration"</span><span class="p">,</span>
+        <span class="s2">"logintype"</span><span class="p">:</span> <span class="s2">"login type"</span><span class="p">,</span>
+        <span class="s2">"authstate"</span><span class="p">:</span> <span class="s2">"authentication state of user"</span><span class="p">,</span>
+        <span class="s2">"englishname"</span><span class="p">:</span> <span class="s2">"english name"</span><span class="p">,</span>
+        <span class="s2">"gametitle"</span><span class="p">:</span> <span class="s2">"game title"</span><span class="p">,</span>
+        <span class="s2">"gamelevel"</span><span class="p">:</span> <span class="s2">"game level reached"</span><span class="p">,</span>
+        <span class="s2">"gamemilstone"</span><span class="p">:</span> <span class="s2">"game milestone"</span><span class="p">,</span>
+        <span class="s2">"micrositename"</span><span class="p">:</span> <span class="s2">"microsite name"</span><span class="p">,</span>
+        <span class="s2">"micrositeadv"</span><span class="p">:</span> <span class="s2">"microsite advertiser"</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+<aside class="warning">Note: <b><i>previouspage</i></b> context variable is handled through Adobe plugin using <b><i>s.pageName</i></b> variable and does not need to be set in <b><i>turner_metadata</i></b> as long as <b><i>s.pageName</i></b> variable is set.</aside>
+<h2 id='interaction-tracking'>Interaction Tracking</h2>
+<blockquote>
+<p>Featured Content Click</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"featured content event"</span><span class="p">,</span>
+        <span class="s2">"featuredcontent"</span> <span class="p">:</span> <span class="s2">"featured content name"</span><span class="p">,</span>
+        <span class="s2">"featuredcontentevent"</span> <span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">});</span>
 </code></pre>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>Interaction and Social Click</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"deleted"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">":("</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<pre class="highlight javascript tab-javascript"><code><span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"name of social or button"</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Video Recommendation Click</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"video recommendation event"</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+<blockquote>
+<p>Registration Process Start Click</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"registration start event"</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Successful Registration Complete</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"registration complete event"</span><span class="p">,</span>
+        <span class="s2">"registrationevent"</span> <span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+<blockquote>
+<p>Internal Campaign/Banner Click</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"internal campaign event"</span><span class="p">,</span>
+        <span class="s2">"internalcampaign"</span> <span class="p">:</span> <span class="s2">"campaign name"</span><span class="p">,</span>
+        <span class="s2">"featuredcontentevent"</span> <span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Login Click</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"login start event"</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Successful Login Complete</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"login complete event"</span><span class="p">,</span>
+        <span class="s2">"loginevent"</span> <span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre><h2 id='interaction-tracking-2'>Interaction Tracking</h2>
+<blockquote>
+<p>Game Start Click</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"game start event"</span><span class="p">,</span>
+        <span class="s2">"gamestart"</span> <span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Game Time Spent (every 60 second during game play)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"game time spent event"</span><span class="p">,</span>
+        <span class="s2">"gametimespent"</span> <span class="p">:</span> <span class="mi">60</span> <span class="c1">//time spent since the last call in second</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Game Replay Click</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"game replay event"</span><span class="p">,</span>
+        <span class="s2">"gamereplay"</span> <span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="o">&gt;</span> <span class="nx">Game</span> <span class="nx">Level</span> <span class="nx">Replay</span> <span class="nx">Click</span>
+
+<span class="s2">```javascript
+
+turner_metadata.trackAction.push({
+    "type" : "interaction",
+    "data" : {
+        "interaction" : "game level replay event",
+        "gamelevelreplay" : 1
+    }
+});
+
 </span></code></pre>
-<p>This endpoint deletes a specific kitten.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the kitten to delete</td>
-</tr>
-</tbody></table>
-<h1 id='errors'>Errors</h1>
-<aside class="notice">
-This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
-</aside>
+<blockquote>
+<p>Game Exit Click</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"game exit event"</span><span class="p">,</span>
+        <span class="s2">"gameexit"</span> <span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">});</span>
 
-<p>The Kittn API uses the following error codes:</p>
+</code></pre>
+<blockquote>
+<p>Game Complete Click</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"interaction"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">"game complete event"</span><span class="p">,</span>
+        <span class="s2">"gamecomplete"</span> <span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">});</span>
 
-<table><thead>
-<tr>
-<th>Error Code</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>400</td>
-<td>Bad Request -- Your request is invalid.</td>
-</tr>
-<tr>
-<td>401</td>
-<td>Unauthorized -- Your API key is wrong.</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden -- The kitten requested is hidden for administrators only.</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found -- The specified kitten could not be found.</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed -- You tried to access a kitten with an invalid method.</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone -- The kitten requested has been removed from our servers.</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&#39;m a teapot.</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests -- You&#39;re requesting too many kittens! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
-</tr>
-</tbody></table>
+</code></pre><h2 id='video-tracking'>Video Tracking</h2>
+<aside class="warning">Note: Notice QoS Tracking Forthcoming</aside>
+
+<blockquote>
+<p>Player Ready </p>
+
+<p>*must be called for every new video</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="s2">"subtype"</span> <span class="p">:</span> <span class="s2">"Player_Ready"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"playerid"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* unique player id if multiple instances on a page */</span>
+        <span class="s2">"content_duration"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="cm">/* video length in seconds */</span>
+        <span class="s2">"content_dataCreated"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* YYYY-MM-DD (e.g. 2018-08-30) */</span>
+        <span class="s2">"content_dataAired"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* YYYY-MM-DD (e.g. 2018-08-30) */</span>
+        <span class="s2">"content_name"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* video title */</span>
+        <span class="s2">"content_id"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* video id */</span>
+        <span class="s2">"content_type"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* clip, vod, live */</span>
+        <span class="s2">"content_showName"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* show name */</span>
+        <span class="s2">"content_seasonNumber"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* season number (e.g. 1, 2, 3, etc.) */</span>
+        <span class="s2">"content_episodeNumber"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* episode number (e.g. 1, 2, 3, etc.) */</span>
+        <span class="s2">"content_genre"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* genre (e.g. drama, comedy, etc.) */</span>
+        <span class="s2">"content_rating"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* rating (e.g. tvy, tvg, tvpg, tvm, etc.) */</span>
+        <span class="s2">"content_originator"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* originator (e.g. warnermedia, sony, disney, etc.) */</span>
+        <span class="s2">"content_network"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* network (e.g. fox, brabo, espn, etc.) */</span>
+        <span class="s2">"content_mvpd"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* mvpd (e.g. comcast, directv, dish, etc.) */</span>
+        <span class="s2">"content_authorized"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* true or false */</span>
+        <span class="s2">"day_part"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* time of day (e.g. morning, daytime, primetime, etc.) */</span>
+        <span class="s2">"content_feed"</span><span class="p">:</span> <span class="s2">""</span> <span class="cm">/* feed (e.g. east-hd, west-hd, east-sd, etc.) */</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Ad Start</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="s2">"subtype"</span> <span class="p">:</span> <span class="s2">"Ad_Started"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"ad_id"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* ad identifier */</span>
+        <span class="s2">"ad_duration"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="cm">/* ad duration in seconds */</span>
+        <span class="s2">"ad_type"</span><span class="p">:</span> <span class="s2">""</span> <span class="cm">/* ad type (e.g. preroll, midroll, postroll) */</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Ad Skipped</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="s2">"subtype"</span> <span class="p">:</span> <span class="s2">"Ad_Skipped"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Ad Completes</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="s2">"subtype"</span> <span class="p">:</span> <span class="s2">"Ad_Finished"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Media Start</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="s2">"subtype"</span> <span class="p">:</span> <span class="s2">"Media_Started"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Media Buffering Start</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="s2">"subtype"</span> <span class="p">:</span> <span class="s2">"Media_Buffering_Started"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Media Buffering End</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="s2">"subtype"</span> <span class="p">:</span> <span class="s2">"Media_Buffering_End"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Media Pause</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="s2">"subtype"</span> <span class="p">:</span> <span class="s2">"Media_Pause"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Media Resume</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="s2">"subtype"</span> <span class="p">:</span> <span class="s2">"Media_Resumed"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Chapter Starts </p>
+
+<p>*Media Start must be called first</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="na">type</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="na">subtype</span> <span class="p">:</span> <span class="s2">"Media_Chapter_Started "</span><span class="p">,</span>
+    <span class="na">data</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"chapter_name"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* chapter name */</span>
+        <span class="s2">"chapter_position"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="cm">/* chapter position integer */</span>
+        <span class="s2">"chapter_duration"</span><span class="p">:</span> <span class="mi">0</span> <span class="cm">/* chapter duration in seconds */</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Chapter End</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="na">type</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="na">subtype</span> <span class="p">:</span> <span class="s2">"Media_Chapter_Finished"</span><span class="p">,</span>
+    <span class="na">data</span> <span class="p">:</span> <span class="p">{}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Media Resume</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="na">type</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="na">subtype</span> <span class="p">:</span> <span class="s2">"Media_Finished"</span><span class="p">,</span>
+    <span class="na">data</span> <span class="p">:</span> <span class="p">{}</span>
+<span class="p">});</span>
+
+</code></pre>
+<blockquote>
+<p>Content Completed and Unloaded </p>
+
+<p>*trigger after post roll</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code>
+<span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="na">type</span> <span class="p">:</span> <span class="s2">"video"</span><span class="p">,</span>
+    <span class="na">subtype</span> <span class="p">:</span> <span class="s2">"Content_Completed"</span><span class="p">,</span>
+    <span class="na">data</span> <span class="p">:</span> <span class="p">{}</span>
+<span class="p">});</span>
+
+</code></pre><h1 id='extending-adobe-analytics-tracking'>Extending Adobe Analytics Tracking</h1><h2 id='adding-a-standard-page-view-variable'>Adding a Standard Page View Variable</h2>
+<ol>
+  <li>Add the new data to <b><i>turner_metadata</i></b> object.</li>
+  <li>Log on to <b><i>Ensighten Manage,</i></b></li>
+  <li>Open the appropriate <b><i>Adobe Analytics – All Page View </i></b> tag and <b><i>Edit Tag</i></b>.</li>
+  <li>Click <b><i>+ Add</i></b> button</li>
+  <li>Select <b><i>contextData</i></b> for <b><i>Data Name</i></b> and add <b><i>Context Key </i></b> value.</li>
+  <li>Select <b><i>JavaScript</i></b> for <b><i>Retrieve From </i></b> and add the code to get the new data.</li>
+</ol> 
+
+<p><img src="images/Add_Page_Variable.png" alt="alt text" /></p>
+
+<ol start="7">  
+  <li>Click <b><i>Save</i></b>.</li>
+  <li>Click <b><i>Save & Commit</i></b>.</li>
+  <li>Optionally test the change using the nexus-test method discussed previously</li>
+  <li>Click <b><i>Publish</i></b> and select the appropriate space.</li>
+  <li>Click <b><i>Publish</i></b> again to push out your changes.</li>
+
+</ol>
+<h2 id='adding-a-page-view-variable-for-single-page-applications'>Adding a Page View Variable for Single Page Applications</h2>
+<ol>
+   <li>Add the new data to <b><i>data</i></b> object.</li>
+</ol>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"pageView"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"pageName"</span> <span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s2">"section"</span> <span class="p">:</span> <span class="s2">""</span><span class="p">,</span> 
+     <span class="s2">"newdata"</span> <span class="p">:</span> <span class="s2">"new value"</span><span class="p">,</span> <span class="cm">/* example new data point */</span>
+     <span class="s2">"pageviewevent "</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+<ol start = "2">
+   <li>Log on to <b><i>Ensighten Manage</i></b></li>
+   <li>Open the appropriate <b><i>Adobe Analytics – Page Events</i></b> tag and click <b><i>Edit Tag.</i></b></li>
+   <li>Add new data to <b><i>PubSub.subscribe("pageview", function(data) {});</i></b></li>
+</ol>
+
+<p><img src="images/PubSub_PageView.png" alt="alt text" /></p>
+
+<ol start = "5">
+   <li>Click <b><i>Save & Commit.</i></b></li>
+   <li>Optionally test the change(s) using the nexus-test method discussed previously</li>
+   <li>Click <b><i>Publish</i></b> and select the appropriate space.</li>
+   <li>Click <b><i>Publish</i></b> again to push out your changes.</li>
+
+</ol>
+<h2 id='adding-a-new-variable-amp-event-to-interaction-tracking'>Adding a New Variable &amp; Event to Interaction Tracking</h2>
+<ol>
+   <li>Add the new data to <b><i>data</i></b> object.</li>
+</ol>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">turner_metadata</span><span class="p">.</span><span class="nx">trackAction</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">" interaction event"</span><span class="p">,</span>
+    <span class="s2">"data"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"newdata"</span> <span class="p">:</span> <span class="s2">"new value"</span><span class="p">,</span> <span class="cm">/* example new data point */</span>
+        <span class="s2">"interaction"</span> <span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="cm">/* interaction description */</span>
+     <span class="s2">"interactionevent"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s2">"newevent"</span> <span class="p">:</span> <span class="mi">1</span> <span class="cm">/* example new event */</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre>
+<ol start = "2">
+   <li>Log on to <b><i>Ensighten Manage</i></b></li>
+   <li>Open the appropriate <b><i>Adobe Analytics – Page Events</i></b> tag and click <b><i>Edit Tag.</i></b></li>
+   <li>Add new data to <b><i>PubSub.subscribe("interaction", function(data) {});</i></b></li>
+</ol>
+
+<p><img src="images/PubSub_Interaction.png" alt="alt text" /></p>
+
+<ol start = "5">
+   <li>Click <b><i>Save & Commit.</i></b></li>
+   <li>Optionally test the change(s) using the nexus-test method discussed previously</li>
+   <li>Click <b><i>Publish</i></b> and select the appropriate space.</li>
+   <li>Click <b><i>Publish</i></b> again to push out your changes.</li>
+</ol>
+<h1 id='testing-analytics-calls'>Testing Analytics Calls</h1>
+<p>Using network sniffing tools, such as Charles Proxy, you can monitor Adobe Analytics calls.</p>
+<h2 id='page-view-call'>Page View Call</h2>
+<p>Every page load should fire a page view call.</p>
+
+<p><img src="images/page_load.png" alt="alt text" /></p>
+<h2 id='interaction-call'>Interaction Call</h2>
+<p>The main difference between a page view call and an interaction call is <strong>pev2</strong> variable.  The <strong>pev2</strong> variable is only displaying on interaction calls.</p>
+
+<p><img src="images/interaction_call.png" alt="alt text" /></p>
+<h2 id='video-start-or-ad-start-call'>Video Start or Ad Start Call</h2>
+<p>On every video and ad start, we are expecting a call to Adobe Analytics server (turnerapac.sc.omtrdc.net, analytic.cartoonnetwork.com, etc.).  The video and ad start calls are considered interaction calls and should display <strong>pev2</strong> variable.</p>
+
+<p><img src="images/video_start_call.png" alt="alt text" /></p>
+<h2 id='video-heartbeat-call'>Video Heartbeat Call</h2>
+<p>Video heartbeat calls are normally firing every 10 seconds while you are watching a video.</p>
+
+<p><img src="images/VHL_call.png" alt="alt text" /></p>
 
       </div>
       <div class="dark-box">
